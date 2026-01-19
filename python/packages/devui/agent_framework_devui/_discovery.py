@@ -5,6 +5,7 @@
 import ast
 import importlib
 import importlib.util
+import inspect
 import logging
 import sys
 import uuid
@@ -727,6 +728,9 @@ class EntityDiscovery:
         ]
 
         for obj_type, obj in candidates:
+            if inspect.isawaitable(obj):
+                obj = await obj
+
             if obj is None:
                 continue
 

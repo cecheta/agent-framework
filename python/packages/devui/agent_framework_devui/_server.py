@@ -152,6 +152,8 @@ class DevServer:
                 discovery = self.executor.entity_discovery
                 for entity in self._pending_entities:
                     try:
+                        if inspect.isawaitable(entity):
+                            entity = await entity
                         entity_info = await discovery.create_entity_info_from_object(entity, source="in_memory")
                         discovery.register_entity(entity_info.id, entity_info, entity)
                         logger.info(f"Registered in-memory entity: {entity_info.id}")
